@@ -1,9 +1,9 @@
 # `jest-json`
 
-[![Travis](https://img.shields.io/travis/com/duailibe/jest-json.svg?style=flat-square)](https://travis-ci.com/duailibe/jest-json)
-[![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![npm](https://img.shields.io/npm/v/jest-json.svg?style=flat-square)](https://npmjs.org/jest-json)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
+[![Travis](https://api.travis-ci.com/duailibe/jest-json.svg)](https://travis-ci.com/duailibe/jest-json)
+[![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![npm](https://img.shields.io/npm/v/jest-json.svg)](https://npmjs.org/jest-json)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Jest matchers to work with JSON strings.
 
