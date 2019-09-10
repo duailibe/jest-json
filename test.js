@@ -63,3 +63,49 @@ describe("jsonMatching", () => {
     }).toThrow(/Actual is not valid JSON/);
   });
 });
+
+describe("jsonMatchingNoParseError", () => {
+  test("matches object", () => {
+    expect(JSON.stringify({ foo: "bar" })).toEqual(
+      expect.jsonMatchingNoParseError({
+        foo: expect.any(String)
+      })
+    );
+
+    expect(JSON.stringify({ foo: "bar", bar: "baz" })).toEqual(
+      expect.jsonMatchingNoParseError(expect.objectContaining({ foo: "bar" }))
+    );
+  });
+
+  test("matches array", () => {
+    expect(JSON.stringify(["foo", "bar"])).toEqual(
+      expect.jsonMatchingNoParseError(expect.arrayContaining(["bar", "foo"]))
+    );
+  });
+
+  test("does not error when encountering non-parsable JSON, permitting group matching", () => {
+    expect([
+      "not-json",
+      "{ invalid: JSON ]",
+      JSON.stringify({ valid: "JSON" })
+    ]).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining("not-json"),
+        expect.stringContaining("invalid"),
+        expect.jsonMatchingNoParseError({ valid: "JSON" })
+      ])
+    );
+
+    expect(() =>
+      expect([
+        "not-json",
+        "{ invalid: JSON ]",
+        JSON.stringify({ valid: "JSON" })
+      ]).toEqual(
+        expect.arrayContaining([
+          expect.jsonMatchingNoParseError({ different: "JSON" })
+        ])
+      )
+    ).toThrowError();
+  });
+});
