@@ -95,7 +95,22 @@ function jsonMatching(actual, expected) {
   return { pass: equals(actual, expected) };
 }
 
-expect.extend({ jsonMatching, toMatchJSON });
+function jsonMatchingNoParseError(actual, expected) {
+  const _this = expect.jsonMatchingNoParseError();
+  if (typeof actual !== "string") {
+    throw Error(
+      `You must provide a string to ${_this.toString()}, not '${typeof actual}'.`
+    );
+  }
+  try {
+    actual = JSON.parse(actual);
+    return { pass: equals(actual, expected) };
+  } catch (err) {
+    return { pass: equals(false, true) };
+  }
+}
+
+expect.extend({ jsonMatchingNoParseError, jsonMatching, toMatchJSON });
 
 /**
  * Formats the JSON.parse error message
