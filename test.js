@@ -83,7 +83,7 @@ describe("jsonMatchingNoParseError", () => {
     );
   });
 
-  test("does not error when encountering non-parsable JSON, permitting group matching", () => {
+  test("does not error when encountering non-parsable string, permitting group matching", () => {
     expect([
       "not-json",
       "{ invalid: JSON ]",
@@ -95,7 +95,24 @@ describe("jsonMatchingNoParseError", () => {
         expect.jsonMatchingNoParseError({ valid: "JSON" })
       ])
     );
+  });
 
+  test("throws for non-strings", () => {
+    expect(() =>
+      expect([
+        false,
+        "not-json",
+        "{ invalid: JSON ]",
+        JSON.stringify({ valid: "JSON" })
+      ]).toEqual(
+        expect.arrayContaining([
+          expect.jsonMatchingNoParseError({ valid: "JSON" })
+        ])
+      )
+    ).toThrowError();
+  });
+
+  test("throws when no JSON match is found", () => {
     expect(() =>
       expect([
         "not-json",
