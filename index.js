@@ -1,7 +1,7 @@
 "use strict";
 
 const diff = require("jest-diff");
-const { equals } = require("expect/build/jasmine_utils");
+const { equals } = require("expect/build/jasmineUtils");
 const { isOneline } = require("expect/build/utils");
 const {
   RECEIVED_COLOR,
@@ -96,12 +96,6 @@ function jsonMatching(actual, expected) {
 }
 
 function jsonMatchingNoParseError(actual, expected) {
-  const _this = expect.jsonMatchingNoParseError();
-  if (typeof actual !== "string") {
-    throw Error(
-      `You must provide a string to ${_this.toString()}, not '${typeof actual}'.`
-    );
-  }
   try {
     actual = JSON.parse(actual);
     return { pass: equals(actual, expected) };

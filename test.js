@@ -83,33 +83,25 @@ describe("jsonMatchingNoParseError", () => {
     );
   });
 
-  test("does not error when encountering non-parsable string, permitting group matching", () => {
+  test("does not error when encountering invalid JSON, permitting group matching", () => {
     expect([
+      1,
+      null,
+      false,
       "not-json",
+      { a: "property" },
       "{ invalid: JSON ]",
       JSON.stringify({ valid: "JSON" })
     ]).toEqual(
       expect.arrayContaining([
+        expect.toEqual(1),
+        expect.toEqual(null),
         expect.stringContaining("not-json"),
-        expect.stringContaining("invalid"),
+        expect.stringContaining("invalid: JSON"),
+        expect.objectContaining({ a: "property" }),
         expect.jsonMatchingNoParseError({ valid: "JSON" })
       ])
     );
-  });
-
-  test("throws for non-strings", () => {
-    expect(() =>
-      expect([
-        false,
-        "not-json",
-        "{ invalid: JSON ]",
-        JSON.stringify({ valid: "JSON" })
-      ]).toEqual(
-        expect.arrayContaining([
-          expect.jsonMatchingNoParseError({ valid: "JSON" })
-        ])
-      )
-    ).toThrowError();
   });
 
   test("throws when no JSON match is found", () => {
