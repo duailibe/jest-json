@@ -23,6 +23,7 @@
     "jest-matcher-utils": "^23.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.20",
     "eslint": "^5.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.2",
