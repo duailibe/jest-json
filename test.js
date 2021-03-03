@@ -63,3 +63,58 @@ describe("jsonMatching", () => {
     }).toThrow(/Actual is not valid JSON/);
   });
 });
+
+describe("jsonMatchingNoParseError", () => {
+  test("matches object", () => {
+    expect(JSON.stringify({ foo: "bar" })).toEqual(
+      expect.jsonMatchingNoParseError({
+        foo: expect.any(String)
+      })
+    );
+
+    expect(JSON.stringify({ foo: "bar", bar: "baz" })).toEqual(
+      expect.jsonMatchingNoParseError(expect.objectContaining({ foo: "bar" }))
+    );
+  });
+
+  test("matches array", () => {
+    expect(JSON.stringify(["foo", "bar"])).toEqual(
+      expect.jsonMatchingNoParseError(expect.arrayContaining(["bar", "foo"]))
+    );
+  });
+
+  test("does not error when encountering invalid JSON, permitting group matching", () => {
+    expect([
+      1,
+      null,
+      false,
+      "not-json",
+      { a: "property" },
+      "{ invalid: JSON ]",
+      JSON.stringify({ valid: "JSON" })
+    ]).toEqual(
+      expect.arrayContaining([
+        expect.toEqual(1),
+        expect.toEqual(null),
+        expect.stringContaining("not-json"),
+        expect.stringContaining("invalid: JSON"),
+        expect.objectContaining({ a: "property" }),
+        expect.jsonMatchingNoParseError({ valid: "JSON" })
+      ])
+    );
+  });
+
+  test("throws when no JSON match is found", () => {
+    expect(() =>
+      expect([
+        "not-json",
+        "{ invalid: JSON ]",
+        JSON.stringify({ valid: "JSON" })
+      ]).toEqual(
+        expect.arrayContaining([
+          expect.jsonMatchingNoParseError({ different: "JSON" })
+        ])
+      )
+    ).toThrowError();
+  });
+});

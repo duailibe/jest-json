@@ -1,7 +1,7 @@
 "use strict";
 
 const diff = require("jest-diff");
-const { equals } = require("expect/build/jasmine_utils");
+const { equals } = require("expect/build/jasmineUtils");
 const { isOneline } = require("expect/build/utils");
 const {
   RECEIVED_COLOR,
@@ -95,7 +95,16 @@ function jsonMatching(actual, expected) {
   return { pass: equals(actual, expected) };
 }
 
-expect.extend({ jsonMatching, toMatchJSON });
+function jsonMatchingNoParseError(actual, expected) {
+  try {
+    actual = JSON.parse(actual);
+    return { pass: equals(actual, expected) };
+  } catch (err) {
+    return { pass: equals(false, true) };
+  }
+}
+
+expect.extend({ jsonMatchingNoParseError, jsonMatching, toMatchJSON });
 
 /**
  * Formats the JSON.parse error message
