@@ -1,14 +1,13 @@
 "use strict";
 
-const diff = require("jest-diff");
-const { equals } = require("expect/build/jasmine_utils");
-const { isOneline } = require("expect/build/utils");
+const { equals } = require("expect/build/jasmineUtils");
 const {
   RECEIVED_COLOR,
   matcherHint,
   printExpected,
   printReceived,
-  printWithType
+  printWithType,
+  printDiffOrStringify
 } = require("jest-matcher-utils");
 
 /**
@@ -56,17 +55,16 @@ function toMatchJSON(actual, expected) {
         "\nReceived:\n   " +
         printReceived(actual)
     : () => {
-        const oneline = isOneline(expected, actual);
-        const diffString =
-          !oneline && diff(expected, actual, { expand: this.expand });
-
         return (
           matcherHint(".toMatchJSON") +
-          "\n\nExpected value to match:\n   " +
-          printExpected(expected) +
-          "\nReceived:\n   " +
-          printReceived(actual) +
-          (diffString && !oneline ? "\n\nDifference: \n\n" + diffString : "")
+          "\n\n" +
+          printDiffOrStringify(
+            expected,
+            actual,
+            "Expected",
+            "Received",
+            this.expand !== false
+          )
         );
       };
 

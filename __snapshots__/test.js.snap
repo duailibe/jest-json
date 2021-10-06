@@ -4,7 +4,7 @@ exports[`toMatchJSON throws on invalid JSON 1`] = `
 expect(string).toMatchJSON(expected)
 
 string value must be a string.
-Received: null
+Received has value: null
 `;
 
 exports[`toMatchJSON throws on invalid JSON 2`] = `
