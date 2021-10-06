@@ -51,15 +51,9 @@ describe("jsonMatching", () => {
     );
   });
 
-  test("throws for non-strings", () => {
-    expect(() => {
-      expect({}).toEqual(expect.jsonMatching(expect.anything()));
-    }).toThrow(/You must provide a string/);
-  });
-
-  test("throws for invalid JSON", () => {
-    expect(() => {
-      expect("not json").toEqual(expect.jsonMatching(expect.anything()));
-    }).toThrow(/Actual is not valid JSON/);
+  test("works inside arrayContaining()", () => {
+    expect([1, JSON.stringify({ foo: "bar" })]).toEqual(
+      expect.arrayContaining([expect.jsonMatching({ foo: "bar" })])
+    );
   });
 });

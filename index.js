@@ -79,18 +79,12 @@ function toMatchJSON(actual, expected) {
  *   })
  */
 function jsonMatching(actual, expected) {
-  const _this = expect.jsonMatching();
-  if (typeof actual !== "string") {
-    throw Error(
-      `You must provide a string to ${_this.toString()}, not '${typeof actual}'.`
-    );
-  }
+  let pass = false;
   try {
     actual = JSON.parse(actual);
-  } catch (err) {
-    throw Error("Actual is not valid JSON");
-  }
-  return { pass: equals(actual, expected) };
+    pass = equals(actual, expected);
+  } catch (err) {} // eslint-disable-line no-empty
+  return { pass };
 }
 
 expect.extend({ jsonMatching, toMatchJSON });
