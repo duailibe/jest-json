@@ -20,7 +20,7 @@ expect(string).toMatchJSON(expected)
 
 string value must be a valid JSON.
 Received:
-  "fals"
+  fals
        ^
 Unexpected end of string
 
@@ -31,7 +31,7 @@ expect(string).toMatchJSON(expected)
 
 string value must be a valid JSON.
 Received:
-  "falsr"
+  falsr
        ^
 Unexpected token: r
 `;
@@ -41,7 +41,7 @@ expect(string).toMatchJSON(expected)
 
 string value must be a valid JSON.
 Received:
-  "fals'"
+  fals'
        ^
 Unexpected token: '
 `;
@@ -51,7 +51,7 @@ expect(string).toMatchJSON(expected)
 
 string value must be a valid JSON.
 Received:
-  "fals9"
+  fals9
        ^
 Unexpected number: 9
 `;

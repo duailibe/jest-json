@@ -96,7 +96,7 @@ function printInvalid(received, error) {
   const match = error.match(
     /Unexpected (\w+)(?: .)? in JSON at position (\d+)/
   );
-  const message = "Received:\n  " + printReceived(received) + "\n";
+  const message = "Received:\n  " + RECEIVED_COLOR(received) + "\n";
   if (match) {
     const pos = parseInt(match[2], 10);
     return (
