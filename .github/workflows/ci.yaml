@@ -20,7 +20,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     # Copied from jest-extended
-    - name: install jest@${{ matrix.jest-version }}
+    - name: install with jest@${{ matrix.jest-version }}
       run: yarn add jest@${{ matrix.jest-version }} babel-jest@${{ matrix.jest-version }} pretty-format@${{ matrix.jest-version }} @types/jest@${{ matrix.jest-version }}
     - run: yarn jest --coverage
     - uses: codecov/codecov-action@v2
