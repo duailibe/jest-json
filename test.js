@@ -1,13 +1,5 @@
 "use strict";
 
-const hasAnsi = require("has-ansi");
-const stripAnsi = require("strip-ansi");
-
-expect.addSnapshotSerializer({
-  test: value => typeof value === "string" && hasAnsi(value),
-  print: stripAnsi
-});
-
 require(".");
 
 describe("toMatchJSON", () => {
