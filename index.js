@@ -15,52 +15,52 @@ const {
  *
  *   expect(fooJson).toMatchJSON(expected)
  */
-function toMatchJSON(actual, expected) {
+function toMatchJSON(received, expected) {
   const hint = matcherHint(".toMatchJSON", "string", "expected", {
     isNot: this.isNot
   });
   const prefix = hint + "\n\n" + RECEIVED_COLOR("string") + " ";
 
-  if (typeof actual !== "string") {
+  if (typeof received !== "string") {
     throwError(
       prefix +
         "value must be a string.\n" +
-        printWithType("Received", actual, printReceived)
+        printWithType("Received", received, printReceived)
     );
   }
 
-  if (!actual) {
+  if (!received) {
     throwError(
       prefix +
         "value must be a valid JSON.\nReceived:\n  " +
-        printReceived(actual)
+        printReceived(received)
     );
   }
 
   try {
-    actual = JSON.parse(actual);
+    received = JSON.parse(received);
   } catch (err) {
     throwError(
       prefix +
         "value must be a valid JSON.\n" +
-        printInvalid(actual, err.message)
+        printInvalid(received, err.message)
     );
   }
-  const pass = equals(actual, expected);
+  const pass = equals(received, expected);
   const message = pass
     ? () =>
         matcherHint(".not.toMatchJSON") +
         "\n\nExpected value not to match:\n   " +
         printExpected(expected) +
         "\nReceived:\n   " +
-        printReceived(actual)
+        printReceived(received)
     : () => {
         return (
           matcherHint(".toMatchJSON") +
           "\n\n" +
           printDiffOrStringify(
             expected,
-            actual,
+            received,
             "Expected",
             "Received",
             this.expand !== false
@@ -78,11 +78,11 @@ function toMatchJSON(actual, expected) {
  *     foo: expect.jsonMatching(expected),
  *   })
  */
-function jsonMatching(actual, expected) {
+function jsonMatching(received, expected) {
   let pass = false;
   try {
-    actual = JSON.parse(actual);
-    pass = equals(actual, expected);
+    received = JSON.parse(received);
+    pass = equals(received, expected);
   } catch (err) {} // eslint-disable-line no-empty
   return { pass };
 }
