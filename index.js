@@ -1,14 +1,8 @@
 "use strict";
 
 const { equals } = require("expect/build/jasmineUtils");
-const {
-  RECEIVED_COLOR,
-  matcherHint,
-  printExpected,
-  printReceived,
-  printWithType,
-  printDiffOrStringify
-} = require("jest-matcher-utils");
+
+const errorMarker = "__INTERNALERRORMARKER__";
 
 /**
  * Jest matcher that receives a JSON string and matches to a value.
@@ -16,48 +10,67 @@ const {
  *   expect(fooJson).toMatchJSON(expected)
  */
 function toMatchJSON(received, expected) {
-  const hint = matcherHint(".toMatchJSON", "string", "expected", {
-    isNot: this.isNot
+  const {
+    matcherErrorMessage,
+    RECEIVED_COLOR,
+    printDiffOrStringify,
+    printExpected,
+    printReceived,
+    printWithType,
+    stringify
+  } = this.utils;
+
+  const hint = this.utils.matcherHint("toMatchJSON", undefined, undefined, {
+    isNot: this.isNot,
+    promise: this.promise
   });
-  const prefix = hint + "\n\n" + RECEIVED_COLOR("string") + " ";
 
   if (typeof received !== "string") {
     throwError(
-      prefix +
-        "value must be a string.\n" +
+      matcherErrorMessage(
+        hint,
+        `${RECEIVED_COLOR("received")} value must be a valid JSON string`,
         printWithType("Received", received, printReceived)
-    );
-  }
-
-  if (!received) {
-    throwError(
-      prefix +
-        "value must be a valid JSON.\nReceived:\n  " +
-        printReceived(received)
+      )
     );
   }
 
   try {
     received = JSON.parse(received);
-  } catch (err) {
+  } catch (error) {
+    const match = error.message.match(
+      /Unexpected (\w+)(?: .)? in JSON at position (\d+)/
+    );
+    const index = match ? parseInt(match[2], 10) : received.length;
+    const isEmpty = received.trim().length === 0;
+    const message = isEmpty
+      ? ""
+      : match
+      ? `Unexpected ${match[1]}: ${received[index]}`
+      : "Unexpected end of string";
     throwError(
-      prefix +
-        "value must be a valid JSON.\n" +
-        printInvalid(received, err.message)
+      matcherErrorMessage(
+        hint,
+        `${RECEIVED_COLOR(
+          "received"
+        )} value must be a valid JSON string. ${message}`,
+        isEmpty
+          ? "Received: " + RECEIVED_COLOR(stringify(received))
+          : printJsonError(stringify(received), RECEIVED_COLOR, index + 1)
+      )
     );
   }
+
   const pass = equals(received, expected);
   const message = pass
     ? () =>
-        matcherHint(".not.toMatchJSON") +
-        "\n\nExpected value not to match:\n   " +
-        printExpected(expected) +
-        "\nReceived:\n   " +
-        printReceived(received)
+        `${hint} \n\nExpected: not ${printExpected(expected)}` +
+        (stringify(expected) !== stringify(received)
+          ? `\nReceived:     ${printReceived(received)}`
+          : "")
     : () => {
         return (
-          matcherHint(".toMatchJSON") +
-          "\n\n" +
+          `${hint} \n\n` +
           printDiffOrStringify(
             expected,
             received,
@@ -92,28 +105,21 @@ expect.extend({ jsonMatching, toMatchJSON });
 /**
  * Formats the JSON.parse error message
  */
-function printInvalid(received, error) {
-  const match = error.match(
-    /Unexpected (\w+)(?: .)? in JSON at position (\d+)/
-  );
-  const message = "Received:\n  " + RECEIVED_COLOR(received) + "\n";
-  if (match) {
-    const pos = parseInt(match[2], 10);
-    return (
-      message +
-      " ".repeat(pos + 3) +
-      "^\nUnexpected " +
-      match[1] +
-      ": " +
-      RECEIVED_COLOR(received[pos])
-    );
+function printJsonError(value, print, index) {
+  let message = `Received: `;
+
+  const lines = value.split("\n");
+
+  for (let i = 0, count = 0; i < lines.length; i++) {
+    const line = lines[i];
+    message += print(line) + "\n";
+    if (index >= count && index <= count + line.length) {
+      message += " ".repeat(index - count + (i === 0 ? 10 : 0)) + "^\n";
+    }
+    count += line.length + 1;
   }
-  return (
-    message +
-    " ".repeat(received.length + 3) +
-    "^\n" +
-    "Unexpected end of string\n"
-  );
+
+  return message;
 }
 
 /**
@@ -121,12 +127,22 @@ function printInvalid(received, error) {
  */
 function throwError(message) {
   try {
-    throw Error(message);
+    throw Error(errorMarker);
   } catch (err) {
-    message = message || "Error";
-    const stack = err.stack.slice(message.length).split("\n");
-    stack.splice(0, 4, message);
-    err.stack = stack.join("\n");
-    throw err;
+    const stack = err.stack
+      .slice(err.stack.indexOf(errorMarker) + errorMarker.length)
+      .split("\n");
+
+    for (let i = stack.length - 1; i > 0; i--) {
+      // search for the "first" matcher call in the trace
+      if (stack[i].includes("toMatchJSON")) {
+        stack.splice(0, i + 1, message);
+        break;
+      }
+    }
+
+    const error = Error(message);
+    error.stack = stack.join("\n");
+    throw error;
   }
 }

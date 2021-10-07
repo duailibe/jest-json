@@ -21,9 +21,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "expect": "^27.2.4",
-    "jest-diff": "^27.2.4",
-    "jest-matcher-utils": "^27.2.4"
+    "expect": "^27.2.4"
   },
   "devDependencies": {
     "eslint": "^5.1.0",

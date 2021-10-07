@@ -1,57 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`toMatchJSON throws on invalid JSON 1`] = `
-expect(string).toMatchJSON(expected)
+expect(received).toMatchJSON(expected)
 
-string value must be a string.
+Matcher error: received value must be a valid JSON string
+
 Received has value: null
 `;
 
 exports[`toMatchJSON throws on invalid JSON 2`] = `
-expect(string).toMatchJSON(expected)
+expect(received).toMatchJSON(expected)
 
-string value must be a valid JSON.
-Received:
-  ""
+Matcher error: received value must be a valid JSON string. 
+
+Received: ""
 `;
 
 exports[`toMatchJSON throws on invalid JSON 3`] = `
-expect(string).toMatchJSON(expected)
+expect(received).toMatchJSON(expected)
 
-string value must be a valid JSON.
-Received:
-  fals
-       ^
-Unexpected end of string
+Matcher error: received value must be a valid JSON string. Unexpected end of string
+
+Received: "fals"
+               ^
 
 `;
 
 exports[`toMatchJSON throws on invalid JSON 4`] = `
-expect(string).toMatchJSON(expected)
+expect(received).toMatchJSON(expected)
 
-string value must be a valid JSON.
-Received:
-  falsr
-       ^
-Unexpected token: r
+Matcher error: received value must be a valid JSON string. Unexpected token: r
+
+Received: "falsr"
+               ^
+
 `;
 
 exports[`toMatchJSON throws on invalid JSON 5`] = `
-expect(string).toMatchJSON(expected)
+expect(received).toMatchJSON(expected)
 
-string value must be a valid JSON.
-Received:
-  fals'
-       ^
-Unexpected token: '
+Matcher error: received value must be a valid JSON string. Unexpected token: '
+
+Received: "fals'"
+               ^
+
 `;
 
 exports[`toMatchJSON throws on invalid JSON 6`] = `
-expect(string).toMatchJSON(expected)
+expect(received).toMatchJSON(expected)
 
-string value must be a valid JSON.
-Received:
-  fals9
-       ^
-Unexpected number: 9
+Matcher error: received value must be a valid JSON string. Unexpected number: 9
+
+Received: "fals9"
+               ^
+
 `;
