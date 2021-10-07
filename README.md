@@ -1,6 +1,6 @@
 # `jest-json`
 
-[![Travis](https://api.travis-ci.com/duailibe/jest-json.svg)](https://travis-ci.com/duailibe/jest-json)
+[![CI](https://img.shields.io/github/workflow/status/duailibe/jest-json/CI.svg)](https://github.com/duailibe/jest-json/actions/workflows/ci.yaml)
 [![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![npm](https://img.shields.io/npm/v/jest-json.svg)](https://npmjs.org/jest-json)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
