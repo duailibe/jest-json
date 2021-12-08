@@ -2,7 +2,7 @@
 
 declare namespace jest {
   interface Matchers<R> {
-    toMatchJSON(expected: Record<string, unknown>): R;
+    toMatchJSON(expected: any): R;
   }
 
   interface Expect {
