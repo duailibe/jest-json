@@ -16,6 +16,12 @@ expect(received).toMatchJSON(expected)
 exports[`toMatchJSON assertion error has a nice output 2`] = `
 expect(received).not.toMatchJSON(expected) 
 
+Expected: not {"foo": "bar", "spam": "eggs"}
+`;
+
+exports[`toMatchJSON assertion error has a nice output 3`] = `
+expect(received).not.toMatchJSON(expected) 
+
 Expected: not {"foo": Anything, "spam": "eggs"}
 Received:     {"foo": "bar", "spam": "eggs"}
 `;
