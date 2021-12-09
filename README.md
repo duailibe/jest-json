@@ -34,7 +34,7 @@ expect(foo).toHaveBeenCalledWith(
   "url",
   JSON.stringify({
     foo: "bar",
-    spam: "eggs"
+    spam: "eggs",
   })
 );
 ```
@@ -47,7 +47,7 @@ foo(
   "url",
   JSON.stringify({
     foo: "bar",
-    spam: "eggs"
+    spam: "eggs",
   })
 );
 
@@ -56,7 +56,7 @@ foo(
   "url",
   JSON.stringify({
     spam: "eggs",
-    foo: "bar"
+    foo: "bar",
   })
 );
 ```
@@ -76,7 +76,7 @@ expect(foo).toHaveBeenCalledWith(
   "url",
   expect.jsonMatching({
     foo: "bar",
-    spam: "eggs"
+    spam: "eggs",
   })
 );
 ```

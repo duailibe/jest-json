@@ -28,7 +28,7 @@ describe("jsonMatching", () => {
   test("matches object", () => {
     expect(JSON.stringify({ foo: "bar" })).toEqual(
       expect.jsonMatching({
-        foo: expect.any(String)
+        foo: expect.any(String),
       })
     );
 

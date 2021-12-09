@@ -14,16 +14,16 @@ jobs:
         node-version: [12.x, 14.x, 16.x]
         jest-version: [24, 25, 26, 27]
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-    # Copied from jest-extended
-    - name: install with jest@${{ matrix.jest-version }}
-      run: yarn add jest@${{ matrix.jest-version }} babel-jest@${{ matrix.jest-version }} pretty-format@${{ matrix.jest-version }} @types/jest@${{ matrix.jest-version }}
-    - run: yarn jest --coverage
-    - uses: codecov/codecov-action@v2
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      # Copied from jest-extended
+      - name: install with jest@${{ matrix.jest-version }}
+        run: yarn add jest@${{ matrix.jest-version }} babel-jest@${{ matrix.jest-version }} pretty-format@${{ matrix.jest-version }} @types/jest@${{ matrix.jest-version }}
+      - run: yarn jest --coverage
+      - uses: codecov/codecov-action@v2
 
   lint:
     name: Lint

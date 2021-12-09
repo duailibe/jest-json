@@ -17,12 +17,12 @@ function toMatchJSON(received, expected) {
     printExpected,
     printReceived,
     printWithType,
-    stringify
+    stringify,
   } = this.utils;
 
   const hint = this.utils.matcherHint("toMatchJSON", undefined, undefined, {
     isNot: this.isNot,
-    promise: this.promise
+    promise: this.promise,
   });
 
   if (typeof received !== "string") {
