@@ -14,6 +14,15 @@ describe("toMatchJSON", () => {
     expect(json).not.toMatchJSON({ foo: "baz", spam: "eggs" });
   });
 
+  test("assertion error has a nice output", () => {
+    expect(() =>
+      expect(json).toMatchJSON({ foo: "baz" })
+    ).toThrowErrorMatchingSnapshot();
+    expect(() =>
+      expect(json).not.toMatchJSON({ foo: expect.anything(), spam: "eggs" })
+    ).toThrowErrorMatchingSnapshot();
+  });
+
   test("throws on invalid JSON", () => {
     expect(() => expect(null).toMatchJSON()).toThrowErrorMatchingSnapshot();
     expect(() => expect("").toMatchJSON()).toThrowErrorMatchingSnapshot();
