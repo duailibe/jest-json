@@ -27,46 +27,96 @@ require("jest-json");
 
 ## Motivation
 
-Say you need to assert `foo` was called with `foo("url", "{'foo': 'bar', 'spam': 'eggs'}")`:
+Say you have a function `fetchData` the calls `fetch` with a JSON body and you want to assert that `fetchData` is building the JSON string correctly.
+
+_See this [repl.it](https://repl.it/@duailibe/jest-json-example) for a working example of this problem._
 
 ```js
-// option 1
-expect(foo).toHaveBeenCalledWith(
-  "url",
-  JSON.stringify({
-    foo: "bar",
-    spam: "eggs",
-  })
-);
+function fetchData(userId, fields = []) {
+  if (!fields.includes("profilePicture")) {
+    fields = fields.concat(["profilePicture"]);
+  }
+
+  return fetch("/users", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      params: { id: userId },
+      fields,
+    }),
+  });
+}
 ```
 
-This test may fail depending on how the second argument was created:
+One option to write the test would be to check the final string:
 
 ```js
-// this will pass the test:
-foo(
-  "url",
-  JSON.stringify({
-    foo: "bar",
-    spam: "eggs",
-  })
-);
+test("fetchData", () => {
+  fetchData("ab394js", ["name", "website"]);
 
-// this will fail the test:
-foo(
-  "url",
-  JSON.stringify({
-    spam: "eggs",
-    foo: "bar",
-  })
-);
+  expect(fetch).toHaveBeenCalledWith("/users", {
+    method: "POST",
+    headers: expect.anything(),
+    body: JSON.stringify({
+      params: { id: "ab394js" },
+      fields: ["name", "website", "profilePicture"],
+    }),
+  });
+});
 ```
 
-_See this [repl.it](https://repl.it/@duailibe/jest-json-example) for a working example._
+Ok, this works, but that has a few problems:
 
-To fix the test you'd have to find in `foo.mock.calls` the call you want, parse the JSON and call `expect().toEqual({ spam: "eggs", foo: "bar" })`.
+- you are testing that `"profilePicture"` will be added to the end of the `fields` list,
+- you are testing the exact orders the keys of the body JSON are added.
 
-## Matchers
+If someone changes the test to insert `"profilePicture"` in the beginning of the list, or change the JSON to `JSON.stringify({ fields, params })`, your test will now fail because the JSON string changed, even though it's equivalent to the one in the test. That means we have a flaky test. One way to fix it would be:
+
+```js
+global.fetch = jest.fn();
+
+test("fetchData", () => {
+  fetchData("ab394js", ["name", "website"]);
+
+  expect(fetch).toHaveBeenCalledWith("/users", {
+    method: "POST",
+    headers: expect.anything(),
+    body: expect.anything(),
+  });
+
+  expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
+    params: { id: "ab394js" },
+    fields: expect.arrayContaining(["name", "website", "profilePicture"]),
+  });
+});
+```
+
+That's better, and now we can even use `expect.arrayContaining()` to make sure we assert that the values are present, but don't care about the order.
+
+But that's a really inconvenient way to get the string we're interested (`fetch.mock.calls[0][1].body`).
+
+Now compare that test to this:
+
+```js
+global.fetch = jest.fn();
+
+test("fetchData", () => {
+  fetchData("ab394js", ["name", "website"]);
+
+  expect(fetch).toHaveBeenCalledWith("/users", {
+    method: "POST",
+    headers: expect.anything(),
+    body: expect.jsonMatching({
+      params: { id: "ab394js" },
+      fields: expect.arrayContaining(["name", "website", "profilePicture"]),
+    }),
+  });
+});
+```
+
+Now that's a very neat test.
+
+## API
 
 ### `expect.jsonMatching`
 
