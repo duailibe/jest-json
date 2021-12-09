@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`toMatchJSON assertion error has a nice output 1`] = `
+expect(received).toMatchJSON(expected) 
+
+- Expected  - 1
++ Received  + 2
+
+  Object {
+-   "foo": "baz",
++   "foo": "bar",
++   "spam": "eggs",
+  }
+`;
+
+exports[`toMatchJSON assertion error has a nice output 2`] = `
+expect(received).not.toMatchJSON(expected) 
+
+Expected: not {"foo": Anything, "spam": "eggs"}
+Received:     {"foo": "bar", "spam": "eggs"}
+`;
+
 exports[`toMatchJSON throws on invalid JSON 1`] = `
 expect(received).toMatchJSON(expected)
 
