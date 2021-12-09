@@ -1,9 +1,8 @@
 # `jest-json`
 
-[![CI](https://img.shields.io/github/workflow/status/duailibe/jest-json/CI.svg)](https://github.com/duailibe/jest-json/actions/workflows/ci.yaml)
-[![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![npm](https://img.shields.io/npm/v/jest-json.svg)](https://npmjs.org/jest-json)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/duailibe/jest-json/actions/workflows/ci.yaml/badge.svg)](https://github.com/duailibe/jest-json/actions/workflows/ci.yaml)
+[![codecov](https://codecov.io/gh/duailibe/jest-json/branch/main/graph/badge.svg?token=uUQIzDROrx)](https://codecov.io/gh/duailibe/jest-json)
 
 Jest matchers to work with JSON strings.
 
@@ -104,3 +103,7 @@ expect(json).toMatchJSON(expected);
 const tmp = JSON.parse(json);
 expect(tmp).toEqual(expected);
 ```
+
+## License
+
+[MIT](./LICENSE)

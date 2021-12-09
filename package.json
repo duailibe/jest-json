@@ -10,7 +10,10 @@
   "keywords": [
     "json",
     "jest",
-    "matcher"
+    "matchers",
+    "test",
+    "testing",
+    "assertions"
   ],
   "files": [
     "index.js",
