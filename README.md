@@ -9,6 +9,8 @@ Jest matchers to work with JSON strings.
 
 ## Setup
 
+**Note:** If you're using Jest < 27.2.5, you should stick to `jest-json@^1.0`.
+
 Add `jest-json` to your Jest config:
 
 ```json
