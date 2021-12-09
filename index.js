@@ -66,18 +66,15 @@ function toMatchJSON(received, expected) {
         (stringify(expected) !== stringify(received)
           ? `\nReceived:     ${printReceived(received)}`
           : "")
-    : () => {
-        return (
-          `${hint} \n\n` +
-          printDiffOrStringify(
-            expected,
-            received,
-            "Expected",
-            "Received",
-            this.expand !== false
-          )
+    : () =>
+        `${hint} \n\n` +
+        printDiffOrStringify(
+          expected,
+          received,
+          "Expected",
+          "Received",
+          this.expand !== false
         );
-      };
 
   return { pass, message };
 }
