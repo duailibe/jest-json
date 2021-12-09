@@ -1,7 +1,5 @@
 "use strict";
 
-const { equals } = require("expect/build/jasmineUtils");
-
 const errorMarker = "__INTERNALERRORMARKER__";
 
 /**
@@ -61,7 +59,7 @@ function toMatchJSON(received, expected) {
     );
   }
 
-  const pass = equals(received, expected);
+  const pass = this.equals(received, expected);
   const message = pass
     ? () =>
         `${hint} \n\nExpected: not ${printExpected(expected)}` +
@@ -95,7 +93,7 @@ function jsonMatching(received, expected) {
   let pass = false;
   try {
     received = JSON.parse(received);
-    pass = equals(received, expected);
+    pass = this.equals(received, expected);
   } catch (err) {} // eslint-disable-line no-empty
   return { pass };
 }
