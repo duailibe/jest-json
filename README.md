@@ -2,7 +2,6 @@
 
 [![npm](https://img.shields.io/npm/v/jest-json.svg)](https://npmjs.org/jest-json)
 [![CI](https://github.com/duailibe/jest-json/actions/workflows/ci.yaml/badge.svg)](https://github.com/duailibe/jest-json/actions/workflows/ci.yaml)
-[![codecov](https://codecov.io/gh/duailibe/jest-json/branch/main/graph/badge.svg?token=uUQIzDROrx)](https://codecov.io/gh/duailibe/jest-json)
 
 Jest matchers to work with JSON strings.
 

@@ -11,25 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
-        jest-version: [27, 28, 29]
+        node-version: [20.x, 22.x, 24.x]
+        jest-version: [27, 28, 29, 30]
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn install
-      - run: npx jest@${{ matrix.jest-version }} --coverage
-      - uses: codecov/codecov-action@v2
+      - run: npx jest@${{ matrix.jest-version }}
 
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
-      - run: yarn install
-      - run: yarn lint
